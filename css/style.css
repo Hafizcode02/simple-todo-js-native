@@ -76,7 +76,7 @@ header {
 }
 
 input[type="text"],
-input[type="date"] {
+input[type="datetime-local"] {
   font-family: Raleway, sans-serif;
   background: #f5f1ff;
   border: 2px solid #9475ea;
