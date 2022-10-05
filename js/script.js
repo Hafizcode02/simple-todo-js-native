@@ -85,6 +85,24 @@ const addTaskToCompleted = (todoId) => {
     document.dispatchEvent(new Event(RENDER_EVENT));
 }
 
+const removeTaskFromCompleted = (todoId) => {
+    const todoTarget = findTodoIndex(todoId);
+
+    if (todoTarget === -1) return;
+
+    todos.splice(todoTarget, 1);
+    document.dispatchEvent(new Event(RENDER_EVENT));
+}
+
+const undoTaskFromCompleted = (todoId) => {
+    const todoTarget = findTodo(todoId);
+
+    if (todoTarget == null) return;
+
+    todoTarget.isCompleted = false;
+    document.dispatchEvent(new Event(RENDER_EVENT));
+}
+
 const findTodo = (todoId) => {
     for (const todoItem of todos) {
         if (todoItem.id === todoId) {
@@ -94,14 +112,29 @@ const findTodo = (todoId) => {
     return null;
 }
 
+const findTodoIndex = (todoId) => {
+    for (const index in todos) {
+        if (todos[index].id === todoId) {
+            return index;
+        }
+    }
+
+    return -1;
+}
+
 document.addEventListener(RENDER_EVENT, function () {
     const uncompleteTODOList = document.getElementById('todos');
     uncompleteTODOList.innerHTML = "";
+
+    const completedTODOList = document.getElementById('completed-todos');
+    completedTODOList.innerHTML = "";
 
     for (const todoItem of todos) {
         const todoElement = makeTodo(todoItem);
         if (!todoItem.isCompleted) {
             uncompleteTODOList.append(todoElement);
+        } else {
+            completedTODOList.append(todoElement);
         }
     }
 });
